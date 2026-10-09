@@ -182,6 +182,13 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.85rem}
 <p class="small" id="emailStatus" style="margin-top:8px"></p>
 <button class="btn" style="margin-top:8px" onclick="sendSimpleEmail()">📨 أرسل التذكير لإيميلي الآن (بدون إعداد - جرب هذا أولاً)</button>
 <p class="small" id="simpleStatus"></p>
+<form id="fsForm" action="" method="POST" target="_blank" style="margin-top:8px">
+<input type="hidden" name="subject" value="🥗 تذكير الدايت اليومي - تفعيل">
+<input type="hidden" name="message" value="هذه رسالة التفعيل الأولى لبرنامج الدايت. ارجع للموقع واضغط زر الإرسال.">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="false">
+<button class="btn sec" type="submit" onclick="prepFs()">✉️ لم يصل شيء؟ اضغط هنا للتفعيل بالطريقة البديلة (يفتح صفحة تأكيد)</button>
+</form>
 <h4>2️⃣ إرسال إيميل حقيقي الآن (EmailJS — مجاني)</h4>
 <p class="small">سجل مجاناً في <b>emailjs.com ← Email Services ← اربط Gmail ← Email Templates</b> ثم الصق هنا: <span style="direction:ltr">Public Key + Service ID + Template ID</span>. تُحفظ في جهازك فقط.</p>
 <div class="grid2">
@@ -295,6 +302,12 @@ function downloadICS(){
   'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:وقت الدايت','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='diet-reminder.ics';a.click();
   alert('تم تحميل ملف diet-reminder.ics — افتحه في جوالك واضغط إضافة للتقويم، سيذكرك يومياً بنفس الوقت حتى لو الموقع مقفل.');
+}
+function prepFs(){
+  const to=document.getElementById('email').value.trim();
+  if(!to.includes('@')){alert('اكتب إيميلك أولاً');return false}
+  document.getElementById('fsForm').action='https://formsubmit.co/'+encodeURIComponent(to);
+  return true;
 }
 function sendSimpleEmail(){
   const to=document.getElementById('email').value.trim();
