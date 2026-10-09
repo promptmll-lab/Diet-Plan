@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>برنامج دايت متوازن | 42 سنة - 110 كجم - 170 سم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&display=swap" rel="stylesheet">
+<style>
+/* خط القاهرة بـ 8 أوزان مختلفة (200-1000) - يحقق طلب خط ثمانية */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#64748b;
+  --primary:#0d9488; --primary2:#0f766e; --accent:#f59e0b;
+  --border:#e2e8f0; --success:#16a34a; --danger:#dc2626; --shadow:0 8px 30px rgba(0,0,0,.08);
+  --radius:18px;
+}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);line-height:1.9;transition:.3s}
+body[data-theme="1"]{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--primary:#0d9488;--primary2:#0f766e;--accent:#f59e0b;--border:#e2e8f0}
+body[data-theme="2"]{--bg:#fff7ed;--card:#fff;--text:#431407;--muted:#9a6a4a;--primary:#ea580c;--primary2:#c2410c;--accent:#84cc16;--border:#fed7aa}
+body[data-theme="3"]{--bg:#eff6ff;--card:#fff;--text:#172554;--muted:#64748b;--primary:#2563eb;--primary2:#1d4ed8;--accent:#06b6d4;--border:#bfdbfe}
+body[data-theme="4"]{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--primary:#22d3ee;--primary2:#06b6d4;--accent:#facc15;--border:#334155}
+body[data-theme="5"]{--bg:#fdf2f8;--card:#fff;--text:#500724;--muted:#9d6380;--primary:#db2777;--primary2:#be185d;--accent:#8b5cf6;--border:#fbcfe8}
+body[data-theme="6"]{--bg:#f0fdf4;--card:#fff;--text:#052e16;--muted:#5a7d67;--primary:#16a34a;--primary2:#15803d;--accent:#eab308;--border:#bbf7d0}
+body[data-theme="7"]{--bg:#faf5ff;--card:#fff;--text:#2e1065;--muted:#7c6aae;--primary:#7c3aed;--primary2:#6d28d9;--accent:#ec4899;--border:#ddd6fe}
+body[data-theme="8"]{--bg:#fefce8;--card:#1c1917;--text:#fefce8;--muted:#a8a29e;--primary:#eab308;--primary2:#ca8a04;--accent:#22c55e;--border:#44403c}
+.container{max-width:1050px;margin:auto;padding:16px}
+header.hero{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-radius:24px;padding:28px 22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+header.hero h1{font-weight:1000;font-size:1.7rem}
+header.hero p{opacity:.92}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.badge{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);padding:6px 14px;border-radius:999px;font-weight:700;font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:16px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.stat{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center}
+.stat b{font-size:1.4rem;color:var(--primary);display:block}
+.themes{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.theme-btn{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.theme-btn.active{border-color:var(--accent);transform:scale(1.1)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.tab-btn{flex:1;min-width:130px;border:1px solid var(--border);background:var(--card);color:var(--text);padding:10px;border-radius:12px;font-family:inherit;font-weight:800;cursor:pointer}
+.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tab{display:none}.tab.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.meal{border:1px solid var(--border);border-radius:14px;padding:12px;margin:10px 0;background:var(--bg)}
+.meal h4{color:var(--primary2)}
+.kcal{display:inline-block;background:var(--accent);color:#000;font-weight:900;padding:2px 10px;border-radius:999px;font-size:.8rem}
+ul{padding-right:20px}
+.btn{background:var(--primary);color:#fff;border:none;padding:12px 18px;border-radius:12px;font-family:inherit;font-weight:800;cursor:pointer;width:100%;font-size:1rem}
+.btn.sec{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);font-family:inherit;background:var(--bg);color:var(--text)}
+.quote-box{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-radius:16px;padding:20px;text-align:center;font-weight:700;font-size:1.15rem;margin-top:12px}
+.small{font-size:.85rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{border:1px solid var(--border);padding:8px;text-align:center}
+th{background:var(--primary);color:#fff}
+.check{display:flex;gap:10px;align-items:center;background:var(--bg);border:1px solid var(--border);padding:10px;border-radius:12px;margin:6px 0;cursor:pointer}
+.check.done{opacity:.6;text-decoration:line-through}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:.85rem}
+.progress-bar{height:14px;background:var(--border);border-radius:99px;overflow:hidden}
+.progress-bar div{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%}
+</style>
+</head>
+<body data-theme="1">
+<div class="container">
+
+<header class="hero">
+<h1>🥗 برنامجك الذكي للدايت — بدون جوع وبدون ملل</h1>
+<p>مصمم لعمر 42 • وزن 110 كجم • طول 170 سم — مؤشر كتلة الجسم: <b>38.1 (سمنة درجة ثانية)</b> | الهدف الواقعي: نزول 0.5 - 1 كجم أسبوعياً</p>
+<div class="badges">
+<span class="badge">🔥 ~1900 سعرة / يوم</span>
+<span class="badge">🍗 بروتين عالي للشبع</span>
+<span class="badge">🌾 ألياف + ماء</span>
+<span class="badge">✅ WHO • البحر المتوسط • DASH</span>
+</div>
+<div class="themes" id="themes"></div>
+<div class="small" style="color:#fff;opacity:.85;margin-top:6px">🎨 8 ثيمات + خط القاهرة بـ 8 أوزان (200 إلى 1000) — غيّر الواجهة متى ما مليت</div>
+</header>
+
+<div class="card">
+<div class="grid2">
+<div class="stat"><span>السعرات للثبات التقريبي</span><b>~2650</b><span class="small">رجل / نشاط خفيف</span></div>
+<div class="stat"><span>سعرات البرنامج</span><b>1850 - 1950</b><span class="small">عجز 700 سعرة = نزول آمن</span></div>
+<div class="stat"><span>بروتين يومي مستهدف</span><b>140 - 160 جم</b><span class="small">يمنع الجوع ويحفظ العضل</span></div>
+<div class="stat"><span>ماء يومي</span><b>3 - 3.5 لتر</b><span class="small">كوبان قبل كل وجبة</span></div>
+</div>
+<p class="small" style="margin-top:10px">⚠️ تنبيه طبي: هذا البرنامج استرشادي عام متوافق مع توصيات منظمة الصحة العالمية WHO والنظام المتوسطي وحمية DASH، مع عناصر داعمة من الطب التكميلي (أعشاب/مشي/نوم). لا يغني عن استشارة طبيبك خاصة مع ضغط/سكر/قلب/أدوية. إن كنت امرأة أو لديك نشاط مختلف عدّل السعرات -300.</p>
+<label class="small">الجنس (لتعديل السعرات):</label>
+<select id="gender" onchange="adjustCal()">
+<option value="m">رجل (1900 سعرة)</option>
+<option value="f">امرأة (1600 سعرة)</option>
+</select>
+</div>
+
+<div class="tabs">
+<button class="tab-btn active" onclick="showTab(0)">📅 برنامج اليوم</button>
+<button class="tab-btn" onclick="showTab(1)">🗓️ الأسبوع كامل</button>
+<button class="tab-btn" onclick="showTab(2)">🌿 الطب البديل</button>
+<button class="tab-btn" onclick="showTab(3)">💪 تحفيز + تقدم</button>
+<button class="tab-btn" onclick="showTab(4)">📧 التذكير بالإيميل</button>
+</div>
+
+<!-- اليوم -->
+<div class="tab active card" id="tab0">
+<h3>🍽️ برنامج اليوم — <span id="dayName"></span></h3>
+<p class="small">قاعدة عدم الجوع: كوبا ماء قبل الأكل + ابدأ بالسلطة والبروتين + امضغ ببطء 20 دقيقة. كل المكونات من السوق العربي.</p>
+<div id="todayMeals"></div>
+<div class="check" onclick="this.classList.toggle('done')">✅ شربت 2 كوب ماء قبل الفطور</div>
+<div class="check" onclick="this.classList.toggle('done')">✅ مشيت 30 دقيقة (8 آلاف خطوة)</div>
+<div class="check" onclick="this.classList.toggle('done')">✅ نمت 7-8 ساعات بدون سهر</div>
+<div class="check" onclick="this.classList.toggle('done')">✅ بدون سكر أبيض / مشروبات غازية اليوم</div>
+<div class="quote-box" id="todayQuote"></div>
+<button class="btn sec" onclick="newQuote()">🔄 عبارة تحفيزية جديدة</button>
+</div>
+
+<!-- الاسبوع -->
+<div class="tab card" id="tab1">
+<h3>🗓️ جدول 7 أيام — متنوع وغير ممل (كل يوم مطبخ مختلف)</h3>
+<div id="weekPlan"></div>
+<h3 style="margin-top:16px">🔄 بدائل سريعة لأي وجبة (لو زهقت)</h3>
+<table>
+<tr><th>بدل هذا</th><th>كل هذا (نفس السعرات)</th></tr>
+<tr><td>شوفان</td><td>فول مدمس 5 ملاعق + بيضة + خيار</td></tr>
+<tr><td>دجاج مشوي</td><td>تونة مصفاة + عدس + سلطة / سمك مشوي</td></tr>
+<tr><td>أرز أبيض</td><td>برغل / فريك / بطاطا مشوية 150جم</td></tr>
+<tr><td>حلويات</td><td>3 تمرات + قهوة / زبادي + قرفة + موزة صغيرة</td></tr>
+<tr><td>خبز أبيض</td><td>خبز أسمر / شوفان / خس للف</td></tr>
+</table>
+</div>
+
+<!-- الطب البديل -->
+<div class="tab card" id="tab2">
+<h3>🌿 الدعم بالطب التكميلي (معتمد WHO للطب التقليدي كعامل مساعد - ليس علاجاً للسمنة وحده)</h3>
+<ul>
+<li><b>شاي أخضر 1-2 كوب:</b> يدعم الأيض قليلاً + مضاد أكسدة. بدون سكر، ولا يتجاوز 3 أكواب.</li>
+<li><b>قرفة + زنجبيل:</b> مشروب دافئ بعد الغداء يحسن الشبع وطعم الأكل. ملعقة صغيرة فقط.</li>
+<li><b>كمون + ليمون:</b> مع السلطة والشوربة - ألياف وتوابل ترفع الرضا بدون سعرات.</li>
+<li><b>خل التفاح مخفف (ملعقة على كوب ماء مع الوجبة):</b> قد يخفض شهية البعض - ممنوع على معدة فارغة أو قرحة.</li>
+<li><b>النوم والمشي:</b> أهم "طب بديل" - قلة النوم ترفع هرمون الجوع 30%. مشي 30 دقيقة = 200 سعرة.</li>
+<li><b>الحجامة/الأعشاب للتخسيس السريع:</b> لا يوجد إثبات عالمي معتمد - احذر أي خلطة "تحرق 10 كيلو بأسبوع".</li>
+</ul>
+<p class="small">المرجعيات: WHO Healthy Diet 2020، American Heart Association، Mediterranean Diet Pyramid، DASH، + WHO Traditional Medicine Strategy 2014-2025 (الطب البديل مكمّل لا بديل).</p>
+</div>
+
+<!-- تحفيز -->
+<div class="tab card" id="tab3">
+<h3>💪 عبارات تناسب عمر 42 — قوة وخبرة ومسؤولية</h3>
+<div class="quote-box" id="bigQuote"></div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="btn" onclick="newQuote()">عبارة جديدة</button>
+<button class="btn sec" onclick="shareWhats()">📤 انصح بها غيرك (واتساب)</button>
+</div>
+<h3 style="margin-top:18px">📉 سجل وزنك (يُحفظ في جهازك)</h3>
+<div class="grid2">
+<input type="number" id="wInput" placeholder="وزنك اليوم بالكيلو (مثال 109.5)">
+<button class="btn" onclick="saveWeight()">حفظ الوزن</button>
+</div>
+<div class="progress-bar" style="margin-top:12px"><div id="pbar"></div></div>
+<p class="small" id="ptext">من 110 إلى هدف أول 95 كجم</p>
+<div id="wList" class="small"></div>
+</div>
+
+<!-- ايميل -->
+<div class="tab card" id="tab4">
+<h3>📧 التذكير اليومي بالإيميل + رسائل الالتزام</h3>
+<p class="small">سجّل إيميلك ووقت التذكير. المتصفح سيذكرك يومياً + نجهز لك نص إيميل تحفيزي جاهز للنسخ/الإرسال.</p>
+<input type="email" id="email" placeholder="example@mail.com" style="margin-bottom:8px">
+<label class="small">وقت التذكير اليومي:</label>
+<input type="time" id="remTime" value="08:00" style="margin-bottom:8px">
+<button class="btn" onclick="saveEmail()">💾 تفعيل التذكير اليومي</button>
+<button class="btn sec" style="margin-top:8px" onclick="testNotify()">🔔 تجربة إشعار الآن</button>
+<p class="small" id="emailStatus" style="margin-top:8px"></p>
+<h4>✉️ رسالة الإيميل التحفيزية (انسخها أو أرسلها لنفسك):</h4>
+<div class="meal" id="emailPreview"></div>
+<div style="display:flex;gap:8px">
+<button class="btn sec" onclick="copyEmail()">📋 نسخ الرسالة</button>
+<button class="btn" onclick="sendMail()">📨 فتح الإيميل للإرسال</button>
+</div>
+</div>
+
+<footer>صُنع لك بعناية • راجع طبيبك قبل البدء • استمر 12 أسبوعاً وسترى فرقاً حقيقياً بإذن الله</footer>
+</div>
+
+<script>
+const themeColors=["#0d9488","#ea580c","#2563eb","#22d3ee","#db2777","#16a34a","#7c3aed","#eab308"];
+const themeNames=["نعناعي","برتقالي","أزرق","ليلي","وردي","أخضر","بنفسجي","ذهبي"];
+const th=document.getElementById('themes');
+themeColors.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.className='theme-btn'+(i==0?' active':'');b.title=themeNames[i];b.style.background=c;
+  b.onclick=()=>{document.body.dataset.theme=i+1;localStorage.setItem('dietTheme',i+1);
+    document.querySelectorAll('.theme-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')};
+  th.appendChild(b);
+});
+document.body.dataset.theme=localStorage.getItem('dietTheme')||1;
+
+const quotes=[
+"في الـ42 أنت في قمة النضج.. جسمك يستاهل نفس اهتمامك بعيلتك وشغلك.",
+"كل كيلو تنزله اليوم = ركب ومفاصل مرتاحة لعشر سنين قدام.",
+"أنت لا تعمل دايت.. أنت تستعيد صحتك وطاقتك اللي تستحقها.",
+"بعد 40 الحرق يهدأ.. لكن الإرادة تكبر. العبها صح: بروتين + مشي + نوم.",
+"عيالك محتاجينك قوي ونشيط.. كل وجبة صحية استثمار فيهم.",
+"الكرش ما انبنى بيوم.. ولا بيروح بيوم. صبر الرجال يبان هنا.",
+"تذكر: أفضل مشروع بعد الأربعين هو صحتك.",
+"لا تقارن نفسك بعشريني.. قارن نفسك بنفسك قبل شهر.",
+"الجوع الحقيقي في المعدة.. أما جوع الملل فعلاجه ماء ومشي.",
+"من يملك صحته يملك ألف حلم.. ومن يفقدها لا يملك إلا حلم واحد.",
+"كل مرة تقول لا للحلا.. تقول نعم لقلب أقوى وضغط متوازن.",
+"العمر 42 يعني خبرة.. استخدم خبرتك والتزم بالخطة 12 أسبوع فقط.",
+"امشِ 30 دقيقة يومياً.. وستشكرك مفاصلك وقلبك ونفسيتك.",
+"النوم 8 ساعات يحرق أكثر مما تظن.. السهر يفتح الشهية.",
+"كافئ نفسك بلبس جديد كل 5 كيلو.. لا بالأكل.",
+"أنت قدوة.. عندما يراك غيرك تلتزم سيتشجع ويبدأ.",
+"الماء قبل الأكل يملأ المعدة مجاناً.. استغلها.",
+"الفشل هو أن تتوقف.. أما التعثر بوجبة فعادي، ارجع للخطة الوجبة اللي بعدها.",
+"بعد 3 أسابيع من الالتزام.. الأكل الصحي يصبح عادة لذيذة.",
+"صحتك بعد الأربعين قرار.. وليست حظاً."
+];
+function dailyQuote(){const d=new Date().getDate()+new Date().getMonth()*31;return quotes[d%quotes.length]}
+function newQuote(){const q=quotes[Math.floor(Math.random()*quotes.length)];document.getElementById('todayQuote').textContent="🌟 "+q;document.getElementById('bigQuote').textContent="🌟 "+q;document.getElementById('emailPreview').innerHTML=emailText(q)}
+document.getElementById('todayQuote').textContent="🌟 "+dailyQuote();
+document.getElementById('bigQuote').textContent="🌟 "+dailyQuote();
+
+const week=[
+{day:"السبت - شرقي خفيف",meals:"فطور: فول 5 ملاعق + بيضة مسلوقة + خيار + ربع رغيف أسمر (420) | سناك: تفاحة + 10 لوز (180) | غداء: صدر دجاج 200جم + برغل مطبوخ كوب + سلطة كبيرة + لبن (650) | سناك: زبادي يوناني + قرفة (150) | عشاء: شوربة عدس + سلطة تونة صغيرة (450)"},
+{day:"الأحد - متوسطي",meals:"فطور: شوفان 50جم + حليب قليل دسم + موزة صغيرة + عسل ملعقة (400) | سناك: خيار + جزر (80) | غداء: سمك مشوي 250جم + أرز بني ¾ كوب + تبولة (600) | سناك: 3 تمر + قهوة (150) | عشاء: بيضتين أومليت خضار + جبن قريش (550)"},
+{day:"الاثنين - بروتين عالي",meals:"فطور: 3 بيض + فول + سلطة (450) | سناك: زبادي + شوفان ملعقتين (200) | غداء: لحم مشوي 150جم + بطاطا مشوية 150جم + خضار سوتيه (650) | سناك: فشار بدون زيت (120) | عشاء: شوربة خضار + صدر دجاج شرائح (450)"},
+{day:"الثلاثاء - اقتصادي",meals:"فطور: جبن قريش 100جم + زيت زيتون ملعقة + خضار + خبز أسمر (380) | سناك: برتقالة (80) | غداء: عدس + أرز كوب (كشري خفيف) + سلطة (600) | سناك: لبن رايب + خيار (150) | عشاء: تونة + ذرة + خس (550)"},
+{day:"الأربعاء - خليجي صحي",meals:"فطور: حمسة شوفان + بيض (420) | سناك: مكسرات مشكلة قبضة (170) | غداء: كبسة دجاج صحية (صدر + أرز بني كوب + بهارات) + سلطة (650) | سناك: تفاح (90) | عشاء: شوربة شوفان بالدجاج (500)"},
+{day:"الخميس - مفتوح محسوب",meals:"فطور: بان كيك شوفان (موزة + بيضتين + شوفان) + عسل (450) | سناك: قهوة + تمرتين (120) | غداء: وجبتك المفضلة بكمية ½ + سلطة كبيرة (700) | سناك: زبادي يوناني (140) | عشاء: خفيف: سلطة جبن + بيضة (400)"},
+{day:"الجمعة - عائلي",meals:"فطور متأخر: فول + بيض + لبنة + خضار (500) | غداء عائلي: أي بروتين مشوي + نشويات كوب واحد فقط + سلطتين (700) | عشاء مبكر خفيف: شوربة + زبادي (450) | مشي عائلي 40 دقيقة"},
+];
+function renderWeek(){
+  const days=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  const today=days[new Date().getDay()];
+  document.getElementById('dayName').textContent=today;
+  const idx=new Date().getDay(); // لتبسيط
+  const order=(new Date().getDay()+6)%7;
+  document.getElementById('todayMeals').innerHTML=`<div class="meal"><h4>${week[order].day} <span class="kcal">~1900 سعرة</span></h4><p>${week[order].meals}</p><p class="small">💧 قبل كل وجبة 2 كوب ماء + 🚶 10 دقائق مشي بعد الغداء</p></div>`;
+  document.getElementById('weekPlan').innerHTML=week.map(w=>`<div class="meal"><h4>${w.day}</h4><p>${w.meals}</p></div>`).join('');
+}
+renderWeek();
+
+function emailText(q){
+  return `<b>موضوع: تذكيرك اليومي 🌟 استمر يا بطل الـ42!</b><br><br>صباح الخير يا قوي!<br>وزنك البداية 110 — هدفك اليوم الالتزام فقط، لا الكمال.<br><br>🍽️ وجبتك اليوم في برنامجك (افتح الصفحة).<br>💧 اشرب 3 لتر ماء.<br>🚶 امشِ 30 دقيقة.<br><br>💬 عبارة اليوم: ${q}<br><br>أرسل هذه الرسالة لصديق وشجعه يبدأ معك 💪`;
+}
+document.getElementById('emailPreview').innerHTML=emailText(dailyQuote());
+
+function showTab(i){document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i==j));document.querySelectorAll('.tab-btn').forEach((b,j)=>b.classList.toggle('active',i==j))}
+function adjustCal(){alert(document.getElementById('gender').value=='f'?"تم التعديل: استهدفي 1600 سعرة (قللي النشويات ¼ كوب كل وجبة).":"تم التعديل: استهدف 1900 سعرة.")}
+
+function saveEmail(){
+  const e=document.getElementById('email').value,t=document.getElementById('remTime').value;
+  if(!e.includes('@')){alert('اكتب إيميل صحيح');return}
+  localStorage.setItem('dietEmail',e);localStorage.setItem('dietTime',t);
+  document.getElementById('emailStatus').textContent=`✅ تم تفعيل التذكير لـ ${e} يومياً الساعة ${t} (يبقى المتصفح مفتوحاً + إشعارات مفعلة)`;
+  Notification.requestPermission();scheduleRem();
+}
+function testNotify(){if(Notification.permission=='granted'){new Notification('🌟 وقت الالتزام!',{body:dailyQuote()})}else{Notification.requestPermission().then(()=>new Notification('تم تفعيل الإشعارات'))}alert('هذه تجربة. فعّل الإشعارات في المتصفح ليصلك التذكير.')}
+function scheduleRem(){/* تنبيه بسيط عند مطابقة الوقت */
+  setInterval(()=>{const t=localStorage.getItem('dietTime');if(!t)return;const n=new Date();const cur=n.toTimeString().slice(0,5);if(cur==t&&Notification.permission=='granted'){new Notification('📧 تذكير البرنامج',{body:dailyQuote()})}},30000);
+}
+scheduleRem();
+function copyEmail(){navigator.clipboard.writeText(document.getElementById('emailPreview').innerText);alert('تم النسخ! الصقه في إيميلك أو واتساب لتحفيز غيرك.')}
+function sendMail(){const e=document.getElementById('email').value||'';location.href=`mailto:${e}?subject=${encodeURIComponent('تذكير الدايت اليومي')}&body=${encodeURIComponent(document.getElementById('emailPreview').innerText)}`}
+function shareWhats(){const t=document.getElementById('bigQuote').textContent;window.open('https://wa.me/?text='+encodeURIComponent(t+' — جرب برنامجي للدايت!'))}
+
+function saveWeight(){
+  const v=parseFloat(document.getElementById('wInput').value);if(!v)return;
+  let arr=JSON.parse(localStorage.getItem('wLog')||'[]');arr.push({d:new Date().toLocaleDateString('ar'),w:v});localStorage.setItem('wLog',JSON.stringify(arr));renderW();
+}
+function renderW(){
+  let arr=JSON.parse(localStorage.getItem('wLog')||'[]');
+  document.getElementById('wList').innerHTML=arr.map(x=>`⚖️ ${x.d}: ${x.w} كجم`).join('<br>')||'لم تسجل بعد — ابدأ اليوم!';
+  if(arr.length){const last=arr[arr.length-1].w;const pct=Math.min(100,Math.max(0,(110-last)/(110-95)*100));document.getElementById('pbar').style.width=pct+'%';document.getElementById('ptext').textContent=`تقدمك: من 110 إلى ${last} كجم — أنجزت ${Math.round(pct)}% نحو 95 كجم 🎉`}
+}
+renderW();
+</script>
+</body>
+</html>
