@@ -165,14 +165,33 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.85rem}
 <!-- ايميل -->
 <div class="tab card" id="tab4">
 <h3>📧 التذكير اليومي بالإيميل + رسائل الالتزام</h3>
-<p class="small">سجّل إيميلك ووقت التذكير. المتصفح سيذكرك يومياً + نجهز لك نص إيميل تحفيزي جاهز للنسخ/الإرسال.</p>
+<p class="small">⚠️ موقع GitHub Pages ثابت: لا يستطيع إرسال إيميل تلقائي بالخلفية بدون خدمة خارجية. لذلك وفرت لك 3 طرق — اختر ما يناسبك:</p>
+<table>
+<tr><th>الطريقة</th><th>ترسل تلقائياً؟</th><th>الإعداد</th></tr>
+<tr><td>1️⃣ إشعار المتصفح + تقويم الهاتف (ICS)</td><td>✅ نعم، مجاني فوراً بدون حساب</td><td>دقيقة واحدة</td></tr>
+<tr><td>2️⃣ زر "أرسل إيميل الآن" عبر EmailJS</td><td>✅ إرسال فوري حقيقي لإيميلك</td><td>5 دقائق (مجاني 200 إيميل/شهر)</td></tr>
+<tr><td>3️⃣ تذكير يومي تلقائي بالكامل</td><td>✅ عبر Brevo/Make</td><td>يحتاج ربط خارجي (اشرح لك بالأسفل)</td></tr>
+</table>
+<h4 style="margin-top:12px">1️⃣ التذكير المحلي (يعمل الآن)</h4>
 <input type="email" id="email" placeholder="example@mail.com" style="margin-bottom:8px">
 <label class="small">وقت التذكير اليومي:</label>
 <input type="time" id="remTime" value="08:00" style="margin-bottom:8px">
-<button class="btn" onclick="saveEmail()">💾 تفعيل التذكير اليومي</button>
+<button class="btn" onclick="saveEmail()">💾 تفعيل إشعار المتصفح اليومي</button>
 <button class="btn sec" style="margin-top:8px" onclick="testNotify()">🔔 تجربة إشعار الآن</button>
+<button class="btn sec" style="margin-top:8px" onclick="downloadICS()">📅 تحميل تذكير للتقويم (يشتغل على الجوال حتى لو الموقع مقفل)</button>
 <p class="small" id="emailStatus" style="margin-top:8px"></p>
-<h4>✉️ رسالة الإيميل التحفيزية (انسخها أو أرسلها لنفسك):</h4>
+<h4>2️⃣ إرسال إيميل حقيقي الآن (EmailJS — مجاني)</h4>
+<p class="small">سجل مجاناً في <b>emailjs.com ← Email Services ← اربط Gmail ← Email Templates</b> ثم الصق هنا: <span style="direction:ltr">Public Key + Service ID + Template ID</span>. تُحفظ في جهازك فقط.</p>
+<div class="grid2">
+<input id="ejKey" placeholder="Public Key">
+<input id="ejService" placeholder="Service ID">
+</div>
+<input id="ejTemplate" placeholder="Template ID" style="margin-top:8px">
+<button class="btn" style="margin-top:8px" onclick="sendRealEmail()">📨 أرسل إيميل تجريبي حقيقي الآن</button>
+<p class="small">متغيرات القالب المطلوبة في EmailJS: <span style="direction:ltr">{{to_email}} {{message}} {{day_plan}}</span></p>
+<h4>3️⃣ تذكير تلقائي يومي بالكامل (بدون فتح الموقع)</h4>
+<p class="small">الخيار الأفضل للاستمرارية: خدمة <b>Brevo المجانية (300 إيميل/يوم)</b> أو <b>Make.com</b>: تنشئ حملة Automation ترسل يومياً الساعة 8 صباحاً نص البرنامج + عبارة تحفيزية لقائمة إيميلاتك. لو تريد أشرح لك خطوات Brevo بالصور قل لي.</p>
+<h4>✉️ رسالة الإيميل التحفيزية:</h4>
 <div class="meal" id="emailPreview"></div>
 <div style="display:flex;gap:8px">
 <button class="btn sec" onclick="copyEmail()">📋 نسخ الرسالة</button>
@@ -183,6 +202,7 @@ footer{text-align:center;padding:24px;color:var(--muted);font-size:.85rem}
 <footer>صُنع لك بعناية • راجع طبيبك قبل البدء • استمر 12 أسبوعاً وسترى فرقاً حقيقياً بإذن الله</footer>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 const themeColors=["#0d9488","#ea580c","#2563eb","#22d3ee","#db2777","#16a34a","#7c3aed","#eab308"];
 const themeNames=["نعناعي","برتقالي","أزرق","ليلي","وردي","أخضر","بنفسجي","ذهبي"];
@@ -255,9 +275,41 @@ function saveEmail(){
   const e=document.getElementById('email').value,t=document.getElementById('remTime').value;
   if(!e.includes('@')){alert('اكتب إيميل صحيح');return}
   localStorage.setItem('dietEmail',e);localStorage.setItem('dietTime',t);
-  document.getElementById('emailStatus').textContent=`✅ تم تفعيل التذكير لـ ${e} يومياً الساعة ${t} (يبقى المتصفح مفتوحاً + إشعارات مفعلة)`;
+  document.getElementById('email') && (document.getElementById('email').value=e);
+  document.getElementById('emailStatus').textContent=`✅ تم تفعيل إشعار المتصفح لـ ${e} يومياً الساعة ${t}. مهم: افتح الموقع مرة واحدة يومياً + اسمح بالإشعارات. للتذكير حتى لو الموقع مقفل حمّل ملف التقويم بالأسفل.`;
   Notification.requestPermission();scheduleRem();
 }
+function downloadICS(){
+  const t=(localStorage.getItem('dietTime')||document.getElementById('remTime').value||'08:00').split(':');
+  const hh=String(t[0]).padStart(2,'0'), mm=String(t[1]).padStart(2,'0');
+  // حدث يومي متكرر لمدة 90 يوم
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//DietPlan//AR','BEGIN:VEVENT',
+  'UID:diet-'+Date.now()+'@dietplan',
+  'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z',
+  'DTSTART:20261010T'+hh+mm+'00',
+  'RRULE:FREQ=DAILY;COUNT=90',
+  'SUMMARY:🥗 تذكير برنامج الدايت + عبارة تحفيزية',
+  'DESCRIPTION:افتح برنامجك: https://promptmll-lab.github.io/Diet-Plan/ \\n اشرب ماء + امش 30 دقيقة. '+dailyQuote(),
+  'BEGIN:VALARM','TRIGGER:-PT0M','ACTION:DISPLAY','DESCRIPTION:وقت الدايت','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='diet-reminder.ics';a.click();
+  alert('تم تحميل ملف diet-reminder.ics — افتحه في جوالك واضغط إضافة للتقويم، سيذكرك يومياً بنفس الوقت حتى لو الموقع مقفل.');
+}
+function sendRealEmail(){
+  const key=document.getElementById('ejKey').value.trim(),srv=document.getElementById('ejService').value.trim(),tpl=document.getElementById('ejTemplate').value.trim();
+  const to=document.getElementById('email').value.trim();
+  if(!key||!srv||!tpl){alert('الصق أولاً Public Key و Service ID و Template ID من حسابك في EmailJS');return}
+  if(!to.includes('@')){alert('اكتب إيميلك أولاً');return}
+  localStorage.setItem('ejKey',key);localStorage.setItem('ejService',srv);localStorage.setItem('ejTemplate',tpl);
+  try{
+    emailjs.init(key);
+    emailjs.send(srv,tpl,{to_email:to,message:document.getElementById('emailPreview').innerText,day_plan:dailyQuote()})
+    .then(()=>alert('✅ وصل الإيميل! تفقد صندوق الوارد (والسبام).'))
+    .catch(e=>alert('تعذر الإرسال: تأكد من IDs والقالب يحتوي {{to_email}} {{message}}. الخطأ: '+(e.text||e)));
+  }catch(e){alert('تعذر تحميل EmailJS — تحقق من الإنترنت.')}
+}
+// استرجاع إعدادات EmailJS المحفوظة
+['ejKey','ejService','ejTemplate'].forEach(id=>{const v=localStorage.getItem(id);if(v)document.getElementById(id).value=v});
+const _savedEmail=localStorage.getItem('dietEmail');if(_savedEmail)document.getElementById('email').value=_savedEmail;
 function testNotify(){if(Notification.permission=='granted'){new Notification('🌟 وقت الالتزام!',{body:dailyQuote()})}else{Notification.requestPermission().then(()=>new Notification('تم تفعيل الإشعارات'))}alert('هذه تجربة. فعّل الإشعارات في المتصفح ليصلك التذكير.')}
 function scheduleRem(){/* تنبيه بسيط عند مطابقة الوقت */
   setInterval(()=>{const t=localStorage.getItem('dietTime');if(!t)return;const n=new Date();const cur=n.toTimeString().slice(0,5);if(cur==t&&Notification.permission=='granted'){new Notification('📧 تذكير البرنامج',{body:dailyQuote()})}},30000);
